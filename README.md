@@ -5,7 +5,7 @@
 Download the files and run `python the-game-of-life.py` in your terminal.
 
 ## How to edit
-At the moment you need to edit the `the-game-of-life.py` file using x & y coordinates, I plan to add a near-visual editor soon.
+You can either (painfully) edit `manual-editor.py`, or, alternatively, use the `visual-editor.py` file and edit the `STARTING_GENERATION` variable where you can visually change the starting generation.
 
 ## Example
 ![img](https://i.imgur.com/D93VuKk.gif)

@@ -9,6 +9,7 @@ from . import (
     BOARD_RIGHT_SIDE_CHAR,
 )
 
+
 class Board:
     def __init__(
         self,
@@ -17,10 +18,10 @@ class Board:
         debug: bool = False,
         display_as_numbers: bool = False,
         advanced_number_display: bool = False,
-        label_axis: bool = False, # doesn't really work that well for <10 in width or height
+        label_axis: bool = False,  # doesn't really work that well for <10 in width or height
     ) -> None:
         """
-            Initialises a Board object.
+        Initialises a Board object.
         """
 
         self.width: Final[int] = width
@@ -32,21 +33,20 @@ class Board:
         self.__advanced_number_display: Final[bool] = advanced_number_display
         self.__label_axis: Final[bool] = label_axis
 
-
     def __str__(self) -> str:
         """
-            Returns a string representation of the board.
+        Returns a string representation of the board.
         """
 
         formatted_board = ""
-        
+
         # Set the top of the str board
-        board_width_including_edges = self.width+2
+        board_width_including_edges = self.width + 2
         if self.__label_axis:
             formatted_board += "  " + "".join([str(i) for i in range(self.width)]) + "\n"
-            formatted_board += BOARD_TOP_CHAR*(board_width_including_edges)
+            formatted_board += BOARD_TOP_CHAR * board_width_including_edges
         else:
-            formatted_board += BOARD_TOP_CHAR*(board_width_including_edges)
+            formatted_board += BOARD_TOP_CHAR * board_width_including_edges
 
         for y, row_of_cells in enumerate(self._board):
             # Starting a new line
@@ -63,10 +63,12 @@ class Board:
                     cell_neighbours = self._get_cell_neighbours(cell)
                     alive_neighbours = self._count_alive_cells_in_neighbour_row(cell_neighbours)
                     formatted_board += str(alive_neighbours)
+                
                 elif self.__advanced_number_display:
                     cell_neighbours = self._get_cell_neighbours(cell)
                     alive_neighbours = self._count_alive_cells_in_neighbour_row(cell_neighbours)
                     formatted_board += f"[{'a' if cell.alive else 'd'}{str(alive_neighbours)}]"
+                
                 else:
                     formatted_board += str(cell)
 
@@ -74,54 +76,48 @@ class Board:
             formatted_board += BOARD_RIGHT_SIDE_CHAR
 
         # Set the bottom of the str board
-        formatted_board += "\n" + BOARD_BOTTOM_CHAR*(board_width_including_edges)
+        formatted_board += "\n" + BOARD_BOTTOM_CHAR * (board_width_including_edges)
 
         return formatted_board
 
-
     def _generate_empty_board(self) -> List[List[Cell]]:
         """
-            Generate an empty board with the provided width & height.
+        Generate an empty board with the provided width & height.
 
-            Returns
-            -------
-            A List[List[Cell]].
+        Returns
+        -------
+        A List[List[Cell]].
         """
-        
+
         empty_board: List[List[Cell]] = []
-        
+
         for y in range(self.height):
             empty_board.append([])
 
             for x in range(self.width):
                 new_cell = Cell(x, y, alive=False)
                 empty_board[y].append(new_cell)
-        
+
         return empty_board
-    
 
     def get_cell(self, x: int, y: int) -> Cell:
         return self._board[y][x]
 
-
     def _count_alive_cells_in_neighbour_row(self, neighbours: List[Union[None, Cell]]) -> int:
         """
-            Count the number of alive cells surrounding a cell.
+        Count the number of alive cells surrounding a cell.
 
-            Returns
-            -------
-            `int` of the number of alive cells.
+        Returns
+        -------
+        `int` of the number of alive cells.
         """
-        
+
         number_of_alive_cells = 0
         for neighbour in neighbours:
-            if (
-                neighbour is not None
-                and neighbour.alive
-            ):
+            if neighbour is not None and neighbour.alive:
                 # The cell is within the bounds of the board and is alive.
                 number_of_alive_cells += 1
-        
+
         neighbours = [str(neighbour) for neighbour in neighbours]
         if self.__debug:
             print(f"{number_of_alive_cells=} | {neighbours=}")
@@ -129,12 +125,12 @@ class Board:
 
     def _get_cell_neighbours(self, cell: Cell) -> List[List[Cell]]:
         """
-            Get an iterable List[List] of all neighbouring cells.
+        Get an iterable List[List] of all neighbouring cells.
 
-            Returns
-            -------
-            A List[List[Union[None, Cell]]] of all cell neighbours.
-            `None` is used when a cell would have been out of bounds.
+        Returns
+        -------
+        A List[List[Union[None, Cell]]] of all cell neighbours.
+        `None` is used when a cell would have been out of bounds.
         """
         cell_neighbour_locations = cell.neighbour_locations
         cell_neighbours: List[Union[None, Cell]] = []
@@ -151,9 +147,8 @@ class Board:
             else:
                 # Cell is out of the boards bounds.
                 cell_neighbours.append(None)
-        
-        return cell_neighbours
 
+        return cell_neighbours
 
     def set_cell(self, x: int, y: int, cell: Cell, _board=None) -> Optional[List[List[Cell]]]:
         if _board is None:
@@ -162,15 +157,13 @@ class Board:
             _board[y][x] = cell
             return _board
 
-
     def permutate(self) -> None:
         """
-            Permutate to the next itteration of the board.
+        Permutate to the next itteration of the board.
         """
-        
+
         temp_board: List[List[Cell]] = self._generate_empty_board()
         for y, row_of_cells in enumerate(self._board):
-            
             for x, cell in enumerate(row_of_cells):
                 cell_neighbours = self._get_cell_neighbours(cell)
                 alive_neighbours = self._count_alive_cells_in_neighbour_row(cell_neighbours)
@@ -196,15 +189,13 @@ class Board:
                     if alive_neighbours == 3:
                         # A dead cell will be brought back to live if it has exactly three live neighbors.
                         new_cell = Cell(x, y, alive=True)
-                        temp_board = self.set_cell(x, y, new_cell, _board=temp_board)       
+                        temp_board = self.set_cell(x, y, new_cell, _board=temp_board)
         # Update the game board to have the new board state
         self._board = temp_board
-
 
     def generation(self) -> None:
         print(self)
         self.permutate()
-    
 
     def run_generations(self, amount: int = 10, time_inbetween: Union[int, float] = 0.2) -> None:
         for i in range(amount):

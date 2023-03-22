@@ -9,7 +9,7 @@ class Board:
 
         self.width: Final[int] = width
         self.height: Final[int] = height
-        self.board: List[List[Cell]] = []
+        self.board: List[List[Cell]] = self._generate_empty_board()
 
 
     def _generate_empty_board(self) -> List[List[Cell]]:
@@ -24,10 +24,10 @@ class Board:
         empty_board: List[List[Cell]] = []
         
         for x in range(self.width):
-            empty_board[x] = []
-            
+            empty_board.append([])
+
             for y in range(self.height):
-                new_cell = Cell(x, y)
+                new_cell = Cell(x, y, self)
                 empty_board[x].append(new_cell)
         
         return empty_board

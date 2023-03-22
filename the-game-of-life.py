@@ -21,5 +21,5 @@ game_board.set_cell(2, 2, life.Cell(2, 2, True))
 game_board.set_cell(2, 1, life.Cell(2, 1, True))
 game_board.set_cell(1, 0, life.Cell(1, 0, True))
 
-
+# Run
 game_board.run_generations(29)

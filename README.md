@@ -21,3 +21,4 @@ Parse the following into `life.Board()` as kwargs for debug features;
 |`display_as_numbers=True`|Displays cells as the number of alive cells surrounding them.|
 |`advanced_number_display=True`|Displays cells as the number of alive cells surrounding them as well as provides information on the cells current alive/dead state.|
 |`label_axis=True`|Will label the x & y axis - this breaks for x/y values <10.|
+|`wrapping=True`|Will allow the board to act as an infinte plane.|

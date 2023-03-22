@@ -19,6 +19,7 @@ class Board:
         display_as_numbers: bool = False,
         advanced_number_display: bool = False,
         label_axis: bool = False,  # doesn't really work that well for <10 in width or height
+        wrapping: bool = False,
     ) -> None:
         """
         Initialises a Board object.
@@ -32,6 +33,7 @@ class Board:
         self.__display_as_numbers: Final[bool] = debug if debug else display_as_numbers
         self.__advanced_number_display: Final[bool] = advanced_number_display
         self.__label_axis: Final[bool] = label_axis
+        self.__wrapping: Final[bool] = wrapping
 
     def __str__(self) -> str:
         """
@@ -103,7 +105,7 @@ class Board:
     def get_cell(self, x: int, y: int) -> Cell:
         return self._board[y][x]
 
-    def _count_alive_cells_in_neighbour_row(self, neighbours: List[Union[None, Cell]]) -> int:
+    def _count_alive_cells_in_neighbour_row(self, neighbours: List[Union[None, Cell]], wrapping: bool = False) -> int:
         """
         Count the number of alive cells surrounding a cell.
 
@@ -123,14 +125,14 @@ class Board:
             print(f"{number_of_alive_cells=} | {neighbours=}")
         return number_of_alive_cells
 
-    def _get_cell_neighbours(self, cell: Cell) -> List[List[Cell]]:
+    def _get_cell_neighbours(self, cell: Cell, wrapping: bool = False) -> List[List[Cell]]:
         """
         Get an iterable List[List] of all neighbouring cells.
 
         Returns
         -------
         A List[List[Union[None, Cell]]] of all cell neighbours.
-        `None` is used when a cell would have been out of bounds.
+        `None` is used when a cell would have been out of bounds & wrapping is disabled.
         """
         cell_neighbour_locations = cell.neighbour_locations
         cell_neighbours: List[Union[None, Cell]] = []
@@ -146,7 +148,19 @@ class Board:
                 cell_neighbours.append(cell_at_location)
             else:
                 # Cell is out of the boards bounds.
-                cell_neighbours.append(None)
+                if not self.__wrapping:
+                    cell_neighbours.append(None)
+                else:
+                    if cell_x >= self.width:
+                        cell_x -= self.width
+                    elif cell_x < 0:
+                        cell_x += self.width
+                    if cell_y >= self.height:
+                        cell_y -= self.height
+                    elif cell_y < 0:
+                        cell_y += self.height
+                    cell_at_location = self.get_cell(cell_x, cell_y)
+                    cell_neighbours.append(cell_at_location)
 
         return cell_neighbours
 

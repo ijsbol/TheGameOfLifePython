@@ -10,7 +10,7 @@ class Cell:
         """
             Initialises a Cell object.
         """
-        
+
         self.x: Final[int] = x
         self.y: Final[int] = y
         self.alive: Final[bool] = alive
@@ -58,18 +58,17 @@ class Cell:
         cell_neighbour_locations = self._neighbour_locations
         cell_neighbours: List[Union[None, Cell]] = []
 
-        for row_of_cell_locations in cell_neighbour_locations:
-            for cell_x, cell_y in row_of_cell_locations:
-                # Check that the cell is within the bounds of the Board.
-                if (
-                    (cell_x <= self.board.width and cell_x > 0)
-                    and (cell_y <= self.board.height and cell_y > 0)
-                ):
-                    # Cell is within the boards bounds.
-                    cell_at_location = self.board.get_cell(cell_x, cell_y)
-                    cell_neighbours.append(cell_at_location)
-                else:
-                    # Cell is out of the boards bounds.
-                    cell_neighbours.append(None)
+        for cell_x, cell_y in cell_neighbour_locations:
+            # Check that the cell is within the bounds of the Board.
+            if (
+                (cell_x < self.board.width and cell_x >= 0)
+                and (cell_y < self.board.height and cell_y >= 0)
+            ):
+                # Cell is within the boards bounds.
+                cell_at_location = self.board.get_cell(cell_x, cell_y)
+                cell_neighbours.append(cell_at_location)
+            else:
+                # Cell is out of the boards bounds.
+                cell_neighbours.append(None)
         
         return cell_neighbours

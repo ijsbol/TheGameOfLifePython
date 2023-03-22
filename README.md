@@ -1,7 +1,18 @@
 # The Game of Life
  The Game of Life but programmed in Python
 
-## How to run
+## How to use the interactive editor.
+Install the requirements using `pip install -r requirements.txt` (or `python -m pip install -r requirements.txt`)
+
+Launch the interactive editor using `python interactive-editor.py`.
+
+Click the squares you wish to make alive / kill (click once to make alive (white) click again to kill (black))
+
+To start the simulation, press the `space` key, to stop the simulation / edit it, press the `tab` key.
+
+![img](https://i.imgur.com/csVOmRi.gif)
+
+## How to run via python files.
 Download the files and run `python visual-editor.py` or `python manual-editor.py` in your terminal.
 
 ## How to edit

@@ -18,6 +18,6 @@ Parse the following into `life.Board()` as kwargs for debug features;
 |kwarg|Explanation|
 |--|--|
 |`debug=True`|Enables debug features.|
-|`__display_as_numbers=True`|Displays cells as the number of alive cells surrounding them.|
+|`display_as_numbers=True`|Displays cells as the number of alive cells surrounding them.|
 |`advanced_number_display=True`|Displays cells as the number of alive cells surrounding them as well as provides information on the cells current alive/dead state.|
 |`label_axis=True`|Will label the x & y axis - this breaks for x/y values <10.|

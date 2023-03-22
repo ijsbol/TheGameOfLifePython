@@ -35,9 +35,11 @@ class Board:
         self.__advanced_number_display: Final[bool] = advanced_number_display
         self.__label_axis: Final[bool] = label_axis
         self.__wrapping: Final[bool] = wrapping
-        self.__random_start: Final[bool] = random_start
 
-        self._board: List[List[Cell]] = self._generate_empty_board()
+        if random_start:
+            self._board: List[List[Cell]] = self._generate_empty_board(random_start=True)
+        else:
+            self._board: List[List[Cell]] = self._generate_empty_board()
 
     def __str__(self) -> str:
         """
@@ -86,7 +88,7 @@ class Board:
 
         return formatted_board
 
-    def _generate_empty_board(self) -> List[List[Cell]]:
+    def _generate_empty_board(self, random_start: bool = False) -> List[List[Cell]]:
         """
         Generate an empty board with the provided width & height.
 
@@ -101,7 +103,7 @@ class Board:
             empty_board.append([])
 
             for x in range(self.width):
-                if self.__random_start:
+                if random_start:
                     alive_state = choice([False, True])
                 else:
                     alive_state = False

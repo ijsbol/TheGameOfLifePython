@@ -2,7 +2,7 @@
  The Game of Life but programmed in Python
 
 ## How to run
-Download the files and run `python the-game-of-life.py` in your terminal.
+Download the files and run `python visual-editor.py` or `python manual-editor.py` in your terminal.
 
 ## How to edit
 You can either (painfully) edit `manual-editor.py`, or, alternatively, use the `visual-editor.py` file and edit the `STARTING_GENERATION` variable where you can visually change the starting generation.

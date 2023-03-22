@@ -29,8 +29,8 @@ class Board:
 
         self.__debug: Final[bool] = debug
         self.__display_as_numbers: Final[bool] = debug if debug else display_as_numbers
-        self.advanced_number_display: Final[bool] = advanced_number_display
-        self.label_axis: Final[bool] = label_axis
+        self.__advanced_number_display: Final[bool] = 
+        self.__label_axis: Final[bool] = label_axis
 
 
     def __str__(self) -> str:
@@ -42,7 +42,7 @@ class Board:
         
         # Set the top of the str board
         board_width_including_edges = self.width+2
-        if self.label_axis:
+        if self.__label_axis:
             formatted_board += "  " + "".join([str(i) for i in range(self.width)]) + "\n"
             formatted_board += BOARD_TOP_CHAR*(board_width_including_edges)
         else:
@@ -55,7 +55,7 @@ class Board:
             for x, cell in enumerate(row_of_cells):
                 if x == 0:
                     # Start of a new row
-                    if self.label_axis:
+                    if self.__label_axis:
                         formatted_board += str(y)
                     formatted_board += BOARD_LEFT_SIDE_CHAR
 
@@ -63,7 +63,7 @@ class Board:
                     cell_neighbours = self._get_cell_neighbours(cell)
                     alive_neighbours = self._count_alive_cells_in_neighbour_row(cell_neighbours)
                     formatted_board += str(alive_neighbours)
-                elif self.advanced_number_display:
+                elif self.__advanced_number_display:
                     cell_neighbours = self._get_cell_neighbours(cell)
                     alive_neighbours = self._count_alive_cells_in_neighbour_row(cell_neighbours)
                     formatted_board += f"[{'a' if cell.alive else 'd'}{str(alive_neighbours)}]"

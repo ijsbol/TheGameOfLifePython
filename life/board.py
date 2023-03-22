@@ -1,5 +1,5 @@
-from . import Cell
 from typing import Final, List
+from . import Cell
 
 class Board:
     def __init__(self, width: int, height: int) -> None:

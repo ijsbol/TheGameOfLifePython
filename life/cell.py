@@ -1,5 +1,7 @@
 from typing import Final, List, Tuple, Union
-from . import Board
+
+class Board:
+    """For type hinting purposes, this avoids a circular import problem."""
 
 class Cell:
     def __init__(self, x: int, y: int, board: Board, alive: bool = False) -> None:
@@ -10,7 +12,6 @@ class Cell:
         self.y: Final[int] = y
         self.alive: Final[bool] = alive
         self.board: Final[Board] = board
-    
     
     @property
     def _neighbour_locations(self) -> List[List[Tuple[int, int]]]:

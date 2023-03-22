@@ -70,8 +70,8 @@ class Board:
         return empty_board
 
 
-    def _get_cell(self, x: int, y: int) -> Cell:
-        return self._board[x][y]
+    def get_cell(self, x: int, y: int) -> Cell:
+        return self._board[y][x]
 
 
     def _count_alive_cells_in_neighbour_row(self, neighbours: List[Union[None, Cell]]) -> int:

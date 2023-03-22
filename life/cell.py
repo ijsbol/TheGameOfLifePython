@@ -10,6 +10,7 @@ class Cell:
         """
             Initialises a Cell object.
         """
+        
         self.x: Final[int] = x
         self.y: Final[int] = y
         self.alive: Final[bool] = alive
@@ -20,25 +21,27 @@ class Cell:
         """
             Returns a string representation of the cell.
         """
+
         return CELL_ALIVE_CHAR if self.alive else CELL_DEAD_CHAR
 
 
     @property
-    def _neighbour_locations(self) -> List[List[Tuple[int, int]]]:
+    def _neighbour_locations(self) -> List[Tuple[int, int]]:
         """
             Get neighbouring cells.
 
             Returns
             -------
-            A List[List[Tuple[int, int]]] of the surrounding cell x & y coordinates.
+            A List[Tuple[int, int]] of the surrounding cell x & y coordinates.
             Will return impossible cell locations, will require further data validation.
         """
+
         x = self.x
         y = self.y
         return [
-            [(x-1, y+1), (x  , y+1), (x+1, y+1)],
-            [(x-1, y  ),             (x+1, y  )],
-            [(x-1, y-1), (x  , y-1), (x+1, y-1)],
+            (x-1, y+1), (x  , y+1), (x+1, y+1),
+            (x-1, y  ),             (x+1, y  ),
+            (x-1, y-1), (x  , y-1), (x+1, y-1),
         ]
 
 
@@ -51,10 +54,11 @@ class Cell:
             A List[List[Union[None, Cell]]] of all cell neighbours.
             `None` is used when a cell would have been out of bounds.
         """
-        cell_neighbour_locations = self._neighbour_locations
-        cell_neighbours: List[List[Union[None, Cell]]] = []
 
-        for row_index, row_of_cell_locations in enumerate(cell_neighbour_locations):
+        cell_neighbour_locations = self._neighbour_locations
+        cell_neighbours: List[Union[None, Cell]] = []
+
+        for row_of_cell_locations in cell_neighbour_locations:
             for cell_x, cell_y in row_of_cell_locations:
                 # Check that the cell is within the bounds of the Board.
                 if (
@@ -63,9 +67,9 @@ class Cell:
                 ):
                     # Cell is within the boards bounds.
                     cell_at_location = self.board.get_cell(cell_x, cell_y)
-                    cell_neighbours[row_index].append(cell_at_location)
+                    cell_neighbours.append(cell_at_location)
                 else:
                     # Cell is out of the boards bounds.
-                    cell_neighbours[row_index].append(None)
+                    cell_neighbours.append(None)
         
         return cell_neighbours

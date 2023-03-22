@@ -1,5 +1,7 @@
 from typing import Final, List, Tuple, Union
 
+from . import CELL_ALIVE_CHAR, CELL_DEAD_CHAR
+
 class Board:
     """For type hinting purposes, this avoids a circular import problem."""
 
@@ -13,6 +15,14 @@ class Cell:
         self.alive: Final[bool] = alive
         self.board: Final[Board] = board
     
+
+    def __str__(self) -> str:
+        """
+            Returns a string representation of the cell.
+        """
+        return CELL_ALIVE_CHAR if self.alive else CELL_DEAD_CHAR
+
+
     @property
     def _neighbour_locations(self) -> List[List[Tuple[int, int]]]:
         """
@@ -44,8 +54,8 @@ class Cell:
         cell_neighbour_locations = self._neighbour_locations
         cell_neighbours: List[List[Union[None, Cell]]] = []
 
-        for row_index, cell_row in enumerate(cell_neighbour_locations):
-            for cell_x, cell_y in cell_row:
+        for row_index, row_of_cell_locations in enumerate(cell_neighbour_locations):
+            for cell_x, cell_y in row_of_cell_locations:
                 # Check that the cell is within the bounds of the Board.
                 if (
                     (cell_x <= self.board.width and cell_x > 0)

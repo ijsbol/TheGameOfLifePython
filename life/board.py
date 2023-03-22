@@ -197,7 +197,7 @@ class Board:
         print(self)
         self.permutate()
 
-    def run_generations(self, amount: int = 10, time_inbetween: Union[int, float] = 0.2) -> None:
+    def run_generations(self, amount: int = 10, time_inbetween: float = 0.2) -> None:
         for i in range(amount):
             self.generation()
             sleep(time_inbetween)

@@ -29,7 +29,7 @@ class Board:
 
         self.__debug: Final[bool] = debug
         self.__display_as_numbers: Final[bool] = debug if debug else display_as_numbers
-        self.__advanced_number_display: Final[bool] = 
+        self.__advanced_number_display: Final[bool] = advanced_number_display
         self.__label_axis: Final[bool] = label_axis
 
 

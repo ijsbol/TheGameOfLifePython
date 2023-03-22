@@ -1,5 +1,6 @@
 from typing import Final, List, Union, Optional
 from time import sleep
+from random import choice
 
 from . import (
     Cell,
@@ -20,6 +21,7 @@ class Board:
         advanced_number_display: bool = False,
         label_axis: bool = False,  # doesn't really work that well for <10 in width or height
         wrapping: bool = False,
+        random_start: bool = False,
     ) -> None:
         """
         Initialises a Board object.
@@ -27,13 +29,15 @@ class Board:
 
         self.width: Final[int] = width
         self.height: Final[int] = height
-        self._board: List[List[Cell]] = self._generate_empty_board()
 
         self.__debug: Final[bool] = debug
         self.__display_as_numbers: Final[bool] = debug if debug else display_as_numbers
         self.__advanced_number_display: Final[bool] = advanced_number_display
         self.__label_axis: Final[bool] = label_axis
         self.__wrapping: Final[bool] = wrapping
+        self.__random_start: Final[bool] = random_start
+
+        self._board: List[List[Cell]] = self._generate_empty_board()
 
     def __str__(self) -> str:
         """
@@ -97,7 +101,11 @@ class Board:
             empty_board.append([])
 
             for x in range(self.width):
-                new_cell = Cell(x, y, alive=False)
+                if self.__random_start:
+                    alive_state = choice([False, True])
+                else:
+                    alive_state = False
+                new_cell = Cell(x, y, alive=alive_state)
                 empty_board[y].append(new_cell)
 
         return empty_board

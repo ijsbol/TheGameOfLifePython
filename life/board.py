@@ -8,7 +8,7 @@ from . import (
 )
 
 class Board:
-    def __init__(self, width: int, height: int) -> None:
+    def __init__(self, width: int, height: int, debug: bool = False) -> None:
         """
             Initialises a Board object.
         """
@@ -16,6 +16,7 @@ class Board:
         self.width: Final[int] = width
         self.height: Final[int] = height
         self._board: List[List[Cell]] = self._generate_empty_board()
+        self.__debug = debug
 
 
     def __str__(self) -> str:
@@ -92,6 +93,9 @@ class Board:
                 # The cell is within the bounds of the board and is alive.
                 number_of_alive_cells += 1
         
+        neighbours = [str(neighbour) for neighbour in neighbours]
+        if self.__debug:
+            print(f"{number_of_alive_cells=} | {neighbours=}")
         return number_of_alive_cells
 
 
@@ -130,4 +134,6 @@ class Board:
         self._board = temp_board
 
 
-                    
+    def generation(self) -> None:
+        print(self)
+        self.permutate()

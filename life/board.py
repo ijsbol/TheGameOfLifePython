@@ -1,4 +1,6 @@
 from typing import Final, List, Union, Optional
+from time import sleep
+
 from . import (
     Cell,
     BOARD_TOP_CHAR,
@@ -14,7 +16,8 @@ class Board:
         height: int,
         debug: bool = False,
         display_as_numbers: bool = False,
-        advanced_number_display: bool = False
+        advanced_number_display: bool = False,
+        label_axis: bool = False, # doesn't really work that well for <10 in width or height
     ) -> None:
         """
             Initialises a Board object.
@@ -23,9 +26,11 @@ class Board:
         self.width: Final[int] = width
         self.height: Final[int] = height
         self._board: List[List[Cell]] = self._generate_empty_board()
-        self.__debug = debug
-        self.__display_as_numbers = debug if debug else display_as_numbers
-        self.advanced_number_display = advanced_number_display
+
+        self.__debug: Final[bool] = debug
+        self.__display_as_numbers: Final[bool] = debug if debug else display_as_numbers
+        self.advanced_number_display: Final[bool] = advanced_number_display
+        self.label_axis: Final[bool] = label_axis
 
 
     def __str__(self) -> str:
@@ -37,15 +42,21 @@ class Board:
         
         # Set the top of the str board
         board_width_including_edges = self.width+2
-        formatted_board += BOARD_TOP_CHAR*(board_width_including_edges)
+        if self.label_axis:
+            formatted_board += "  " + "".join([str(i) for i in range(self.width)]) + "\n"
+            formatted_board += BOARD_TOP_CHAR*(board_width_including_edges)
+        else:
+            formatted_board += BOARD_TOP_CHAR*(board_width_including_edges)
 
-        for row_of_cells in self._board:
+        for y, row_of_cells in enumerate(self._board):
             # Starting a new line
             formatted_board += "\n"
 
-            for row_index, cell in enumerate(row_of_cells):
-                if row_index == 0:
+            for x, cell in enumerate(row_of_cells):
+                if x == 0:
                     # Start of a new row
+                    if self.label_axis:
+                        formatted_board += str(y)
                     formatted_board += BOARD_LEFT_SIDE_CHAR
 
                 if self.__display_as_numbers:
@@ -152,7 +163,6 @@ class Board:
             return _board
 
 
-
     def permutate(self) -> None:
         """
             Permutate to the next itteration of the board.
@@ -191,7 +201,12 @@ class Board:
         self._board = temp_board
 
 
-
     def generation(self) -> None:
         print(self)
         self.permutate()
+    
+
+    def run_generations(self, amount: int = 10, time_inbetween: Union[int, float] = 0.2) -> None:
+        for i in range(amount):
+            self.generation()
+            sleep(time_inbetween)

@@ -68,6 +68,8 @@ def carry_out_user_interaction(first_clicked_state_has_been_set: bool, mouse_fir
     if clicked_cell.alive == mouse_first_clicked_cell_alive_state:
         flip_cell_state(clicked_cell)
     
+    draw_grid()
+    
     return first_clicked_state_has_been_set, mouse_first_clicked_cell_alive_state
 
 if __name__ == "__main__":

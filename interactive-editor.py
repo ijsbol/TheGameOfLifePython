@@ -41,19 +41,14 @@ def draw_grid() -> None:
 def figure_out_which_cell(mouse_click_location: Tuple[int]) -> Cell:
     # There is probably a better way of doing this, however; I am very tired.
 
-    for cell_pos_x, window_pos_x in enumerate(range(0, WINDOW_WIDTH, BLOCK_SIZE)):
+    window_pos_x, window_pos_y = mouse_click_location
 
-        for cell_pos_y, window_pos_y in enumerate(range(0, WINDOW_HEIGHT, BLOCK_SIZE)):
+    cell_pos_x = window_pos_x // BLOCK_SIZE
+    cell_pos_y = window_pos_y // BLOCK_SIZE
 
-            if (
-                mouse_click_location[0] >= window_pos_x
-                and mouse_click_location[0] <= window_pos_x + BLOCK_SIZE
-                and mouse_click_location[1] >= window_pos_y
-                and mouse_click_location[1] <= window_pos_y + BLOCK_SIZE
-            ):
-                cell = GAME_BOARD.get_cell(cell_pos_x, cell_pos_y)
-                cell.alive = False if cell.alive else True
-                GAME_BOARD.set_cell(cell_pos_x, cell_pos_y, cell)
+    cell = GAME_BOARD.get_cell(cell_pos_x, cell_pos_y)
+    cell.alive = False if cell.alive else True
+    GAME_BOARD.set_cell(cell_pos_x, cell_pos_y, cell)
 
 if __name__ == "__main__":
     pygame.init()

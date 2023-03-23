@@ -20,7 +20,7 @@ WINDOW_CELL_HEIGHT: Final[int] = 50
 
 WINDOW_HEIGHT: Final[int] = BLOCK_SIZE * WINDOW_CELL_WIDTH
 WINDOW_WIDTH: Final[int] = BLOCK_SIZE * WINDOW_CELL_HEIGHT
-GAME_BOARD = Board(WINDOW_CELL_WIDTH, WINDOW_CELL_HEIGHT, wrapping=BOARD_WRAPPING, random_start=True, random_seed=1000)
+GAME_BOARD = Board(WINDOW_CELL_WIDTH, WINDOW_CELL_HEIGHT, wrapping=BOARD_WRAPPING)
 
 def draw_grid() -> None:
     """
@@ -47,8 +47,25 @@ def figure_out_which_cell(mouse_click_location: Tuple[int]) -> Cell:
     cell_pos_y = window_pos_y // BLOCK_SIZE
 
     cell = GAME_BOARD.get_cell(cell_pos_x, cell_pos_y)
-    cell.alive = False if cell.alive else True
-    GAME_BOARD.set_cell(cell_pos_x, cell_pos_y, cell)
+
+    return cell
+
+def flip_cell_state(cell: Cell) -> None:
+    cell.alive = not cell.alive
+    GAME_BOARD.set_cell(cell.x, cell.y, cell)
+
+def carry_out_user_interaction(first_clicked_state_has_been_set: bool, mouse_first_clicked_cell_alive_state: bool) -> Tuple[bool]:
+    mouse_pos = pygame.mouse.get_pos()
+    clicked_cell = figure_out_which_cell(mouse_pos)
+
+    if not first_clicked_state_has_been_set:
+        mouse_first_clicked_cell_alive_state = clicked_cell.alive
+        first_clicked_state_has_been_set = True
+
+    if clicked_cell.alive == mouse_first_clicked_cell_alive_state:
+        flip_cell_state(clicked_cell)
+    
+    return first_clicked_state_has_been_set, mouse_first_clicked_cell_alive_state
 
 if __name__ == "__main__":
     pygame.init()
@@ -57,6 +74,10 @@ if __name__ == "__main__":
     SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     CLOCK = pygame.time.Clock()
     SCREEN.fill(BLACKGROUND_COLOUR)
+
+    mouse_first_clicked_cell_alive_state = False
+    first_clicked_state_has_been_set = False
+    mouse_is_currently_clicked = False
 
     while True:
         # The game loop
@@ -68,10 +89,29 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 # Check if the player has closed the game.
                 pygame.quit()
-            elif event.type == pygame.MOUSEBUTTONUP:
-                pos = pygame.mouse.get_pos()
-                figure_out_which_cell(pos)
 
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_is_currently_clicked = True
+                first_clicked_state_has_been_set, mouse_first_clicked_cell_alive_state = (
+                    carry_out_user_interaction(
+                        first_clicked_state_has_been_set,
+                        mouse_first_clicked_cell_alive_state
+                    )
+                )
+                
+            elif event.type == pygame.MOUSEBUTTONUP:
+                first_clicked_state_has_been_set = False
+                mouse_is_currently_clicked = False
+            
+            elif event.type == pygame.MOUSEMOTION and mouse_is_currently_clicked:
+                first_clicked_state_has_been_set, mouse_first_clicked_cell_alive_state = (
+                    carry_out_user_interaction(
+                        first_clicked_state_has_been_set,
+                        mouse_first_clicked_cell_alive_state
+                    )
+                )
+
+                    
         keys_pressed_this_frame = pygame.key.get_pressed()
         if keys_pressed_this_frame[pygame.K_SPACE]:
             # If space key is pressed, resume the simulation.

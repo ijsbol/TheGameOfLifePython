@@ -34,7 +34,7 @@ def draw_grid() -> None:
 
         for cell_pos_y, window_pos_y in enumerate(range(0, WINDOW_HEIGHT, BLOCK_SIZE)):
 
-            rect = Rect(window_pos_x, window_pos_y, BLOCK_SIZE-OUTLINE_OFFSET, BLOCK_SIZE-OUTLINE_OFFSET)
+            rect = pygame.Rect(window_pos_x, window_pos_y, BLOCK_SIZE-OUTLINE_OFFSET, BLOCK_SIZE-OUTLINE_OFFSET)
 
             cell = GAME_BOARD.get_cell(cell_pos_x, cell_pos_y)
             cell_colour = ALIVE_COLOUR if cell.alive else DEAD_COLOUR

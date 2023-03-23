@@ -82,10 +82,10 @@ if __name__ == "__main__":
     first_clicked_state_has_been_set = False
     mouse_is_currently_clicked = False
 
+    draw_grid()
+
     while True:
         # The game loop
-
-        draw_grid()
         
         events_this_frame = pygame.event.get()
         for event in events_this_frame:
@@ -132,3 +132,4 @@ if __name__ == "__main__":
             and ALLOW_ITTERATIONS
         ):
             GAME_BOARD.permutate()
+            draw_grid()

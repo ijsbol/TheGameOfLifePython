@@ -4,23 +4,27 @@ from typing import Final, Tuple, Any
 from life import Board, Cell
 import pygame
 
-# Board wrapping allows for infinite travel.
-BOARD_WRAPPING: Final[bool] = True
+# You can edit these to configure the game.
+BOARD_WRAPPING: Final[bool] = True # Enable board wrapping
+DEAD_COLOUR: Final[str] = "BLACK" # Dead cell colour
+ALIVE_COLOUR: Final[str] = "WHITE" # Alive cell colour
+CELL_OUTLINE_COLOUR: Final[str] = "WHITE" # Cell outline colour
+BLOCK_SIZE: Final[int] = 10 # Size of the cells (in pixels)
+FRAME_RATE: Final[float] = 0.1 # Maximum frame rate (time between frames)
+OUTLINE_CELLS: Final[bool] = False # Should the cells be outlined?
+OUTLINE_OFFSET_VALUE: Final[int] = 1 # If cells are outlined, how big of an outline should there be? (in pixels)
+WINDOW_CELL_WIDTH: Final[int] = 50 # How many cells wide should the window be
+WINDOW_CELL_HEIGHT: Final[int] = 50 # How many cells tall should the window be
 
-DEAD_COLOUR: Final[str] = "BLACK"
-ALIVE_COLOUR: Final[str] = "WHITE"
-BLACKGROUND_COLOUR: Final[str] = "WHITE"
-BLOCK_SIZE: Final[int] = 20
-FRAME_RATE: Final[float] = 0.1
-
+# Do not edit these unless you want to break stuff.
 ALLOW_ITTERATIONS: bool = False
-
-WINDOW_CELL_WIDTH: Final[int] = 50
-WINDOW_CELL_HEIGHT: Final[int] = 50
-
 WINDOW_HEIGHT: Final[int] = BLOCK_SIZE * WINDOW_CELL_WIDTH
 WINDOW_WIDTH: Final[int] = BLOCK_SIZE * WINDOW_CELL_HEIGHT
+OUTLINE_OFFSET: Final[int] = OUTLINE_OFFSET_VALUE if OUTLINE_CELLS else 0
+
+# If you wish to parse kwargs listed in the README.md file, then do that here after wrapping=BOARD_WRAPPING.
 GAME_BOARD = Board(WINDOW_CELL_WIDTH, WINDOW_CELL_HEIGHT, wrapping=BOARD_WRAPPING)
+
 
 def draw_grid() -> None:
     """
@@ -31,7 +35,7 @@ def draw_grid() -> None:
 
         for cell_pos_y, window_pos_y in enumerate(range(0, WINDOW_HEIGHT, BLOCK_SIZE)):
 
-            rect = pygame.Rect(window_pos_x, window_pos_y, BLOCK_SIZE-1, BLOCK_SIZE-1)
+            rect = pygame.Rect(window_pos_x, window_pos_y, BLOCK_SIZE-OUTLINE_OFFSET, BLOCK_SIZE-OUTLINE_OFFSET)
 
             cell = GAME_BOARD.get_cell(cell_pos_x, cell_pos_y)
             cell_colour = ALIVE_COLOUR if cell.alive else DEAD_COLOUR
@@ -73,7 +77,7 @@ if __name__ == "__main__":
 
     SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     CLOCK = pygame.time.Clock()
-    SCREEN.fill(BLACKGROUND_COLOUR)
+    SCREEN.fill(CELL_OUTLINE_COLOUR)
 
     mouse_first_clicked_cell_alive_state = False
     first_clicked_state_has_been_set = False

@@ -1,8 +1,23 @@
-import time
 from typing import Final, Tuple, Any
 
 from life import Board, Cell
-import pygame
+from pygame import (
+    Rect,
+    draw,
+    mouse,
+    display,
+    time,
+    event,
+    key,
+    init,
+    quit,
+    QUIT,
+    MOUSEBUTTONDOWN,
+    MOUSEBUTTONUP,
+    MOUSEMOTION,
+    K_SPACE,
+    K_TAB,
+)
 
 # You can edit these to configure the game.
 BOARD_WRAPPING: Final[bool] = True # Enable board wrapping
@@ -35,12 +50,12 @@ def draw_grid() -> None:
 
         for cell_pos_y, window_pos_y in enumerate(range(0, WINDOW_HEIGHT, BLOCK_SIZE)):
 
-            rect = pygame.Rect(window_pos_x, window_pos_y, BLOCK_SIZE-OUTLINE_OFFSET, BLOCK_SIZE-OUTLINE_OFFSET)
+            rect = Rect(window_pos_x, window_pos_y, BLOCK_SIZE-OUTLINE_OFFSET, BLOCK_SIZE-OUTLINE_OFFSET)
 
             cell = GAME_BOARD.get_cell(cell_pos_x, cell_pos_y)
             cell_colour = ALIVE_COLOUR if cell.alive else DEAD_COLOUR
 
-            pygame.draw.rect(SCREEN, cell_colour, rect)
+            draw.rect(SCREEN, cell_colour, rect)
 
 def figure_out_which_cell(mouse_click_location: Tuple[int]) -> Cell:
     # There is probably a better way of doing this, however; I am very tired.
@@ -59,7 +74,7 @@ def flip_cell_state(cell: Cell) -> None:
     GAME_BOARD.set_cell(cell.x, cell.y, cell)
 
 def carry_out_user_interaction(first_clicked_state_has_been_set: bool, mouse_first_clicked_cell_alive_state: bool) -> Tuple[bool]:
-    mouse_pos = pygame.mouse.get_pos()
+    mouse_pos = mouse.get_pos()
     clicked_cell = figure_out_which_cell(mouse_pos)
 
     if not first_clicked_state_has_been_set:
@@ -72,11 +87,11 @@ def carry_out_user_interaction(first_clicked_state_has_been_set: bool, mouse_fir
     return first_clicked_state_has_been_set, mouse_first_clicked_cell_alive_state
 
 if __name__ == "__main__":
-    pygame.init()
+    init()
     time_delta = 0
 
-    SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    CLOCK = pygame.time.Clock()
+    SCREEN = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    CLOCK = time.Clock()
     SCREEN.fill(CELL_OUTLINE_COLOUR)
 
     mouse_first_clicked_cell_alive_state = False
@@ -88,13 +103,13 @@ if __name__ == "__main__":
 
         draw_grid()
         
-        events_this_frame = pygame.event.get()
+        events_this_frame = event.get()
         for event in events_this_frame:
-            if event.type == pygame.QUIT:
+            if event.type == QUIT:
                 # Check if the player has closed the game.
-                pygame.quit()
+                quit()
 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == MOUSEBUTTONDOWN:
                 mouse_is_currently_clicked = True
                 first_clicked_state_has_been_set, mouse_first_clicked_cell_alive_state = (
                     carry_out_user_interaction(
@@ -103,11 +118,11 @@ if __name__ == "__main__":
                     )
                 )
                 
-            elif event.type == pygame.MOUSEBUTTONUP:
+            elif event.type == MOUSEBUTTONUP:
                 first_clicked_state_has_been_set = False
                 mouse_is_currently_clicked = False
             
-            elif event.type == pygame.MOUSEMOTION and mouse_is_currently_clicked:
+            elif event.type == MOUSEMOTION and mouse_is_currently_clicked:
                 first_clicked_state_has_been_set, mouse_first_clicked_cell_alive_state = (
                     carry_out_user_interaction(
                         first_clicked_state_has_been_set,
@@ -116,16 +131,16 @@ if __name__ == "__main__":
                 )
 
                     
-        keys_pressed_this_frame = pygame.key.get_pressed()
-        if keys_pressed_this_frame[pygame.K_SPACE]:
+        keys_pressed_this_frame = key.get_pressed()
+        if keys_pressed_this_frame[K_SPACE]:
             # If space key is pressed, resume the simulation.
             ALLOW_ITTERATIONS = True
-        elif keys_pressed_this_frame[pygame.K_TAB]:
+        elif keys_pressed_this_frame[K_TAB]:
             # If tab key is pressed, pause the simulation.
             ALLOW_ITTERATIONS = False
 
         # Update the display
-        pygame.display.update()
+        display.update()
 
         time_delta += CLOCK.tick(60) / 1000
         if (

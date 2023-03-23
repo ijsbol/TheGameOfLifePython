@@ -1,6 +1,6 @@
 from typing import Final, List, Union, Optional
 from time import sleep
-from random import choice
+from random import choice, seed
 
 from . import (
     Cell,
@@ -22,6 +22,7 @@ class Board:
         label_axis: bool = False,  # doesn't really work that well for <10 in width or height
         wrapping: bool = False,
         random_start: bool = False,
+        random_seed: int = None,
     ) -> None:
         """
         Initialises a Board object.
@@ -35,6 +36,9 @@ class Board:
         self.__advanced_number_display: Final[bool] = advanced_number_display
         self.__label_axis: Final[bool] = label_axis
         self.__wrapping: Final[bool] = wrapping
+
+        if random_seed is not None and isinstance(random_seed, int):
+            seed(random_seed)
 
         if random_start:
             self._board: List[List[Cell]] = self._generate_empty_board(random_start=True)

@@ -34,3 +34,4 @@ Parse the following into `life.Board()` as kwargs for debug features;
 |`label_axis=True`|Will label the x & y axis - this breaks for x/y values <10.|
 |`wrapping=True`|Will allow the board to act as an infinte plane.|
 |`random_start=True`|Allows the board to be initialised with a random layout.|
+|`random_seed=int`|Sets the seed for randomness if `random_start` is enabled.`|

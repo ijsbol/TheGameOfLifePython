@@ -35,3 +35,10 @@ Parse the following into `life.Board()` as kwargs for debug features;
 |`wrapping=True`|Will allow the board to act as an infinte plane.|
 |`random_start=True`|Allows the board to be initialised with a random layout.|
 |`random_seed=int`|Sets the seed for randomness if `random_start` is enabled.`|
+
+## All the GameOfLifes I've made.
+|Language|Repo link|
+|--|--|
+|Python|https://github.com/Scrumpyy/TheGameOfLifePython|
+|Java|https://github.com/Scrumpyy/TheGameOfLifeJava|
+|Javascript|https://github.com/Scrumpyy/TheGameOfLifeJavascript|

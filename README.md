@@ -1,4 +1,4 @@
-# The Game of Life
+# TheGameOfLifePython
  The Game of Life but programmed in Python
 
 ## How to use the interactive editor.

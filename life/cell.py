@@ -2,7 +2,6 @@ from typing import Final, List, Tuple
 
 from . import CELL_ALIVE_CHAR, CELL_DEAD_CHAR
 
-
 class Cell:
     def __init__(self, x: int, y: int, alive: bool = False) -> None:
         """

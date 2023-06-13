@@ -1,4 +1,7 @@
-from typing import Final
+from typing import Final, Tuple
+
+from .board import Board
+from .cell import Cell
 
 FANCY_MODE: Final[bool] = True
 
@@ -19,5 +22,13 @@ else:
     BOARD_LEFT_SIDE_CHAR: Final[str] = "|"
     BOARD_RIGHT_SIDE_CHAR: Final[str] = "|"
 
-from .cell import Cell
-from .board import Board
+__all__: Final[Tuple[str, ...]] = (
+    "Board",
+    "Cell",
+    "CELL_ALIVE_CHAR",
+    "CELL_DEAD_CHAR",
+    "BOARD_TOP_CHAR",
+    "BOARD_BOTTOM_CHAR",
+    "BOARD_LEFT_SIDE_CHAR",
+    "BOARD_RIGHT_SIDE_CHAR",
+)

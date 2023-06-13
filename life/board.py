@@ -1,6 +1,6 @@
-from typing import Final, List, Union, Optional
-from time import sleep
 from random import choice, seed
+from time import sleep
+from typing import Final, List, Optional, Union
 
 from . import (
     Cell,
